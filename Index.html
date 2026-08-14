@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Responsive I Love You Heart Animation across Mobile, Tablet, and Desktop screens.">
+  <title>I Love You Heart Animation | Responsive View</title>
+  <style>
+    /* ==========================================================================
+       Responsive Heart Animation Styles
+       Supports: Mobile (Portrait/Landscape), Tablet, and Desktop (Standard & 4K)
+       ========================================================================== */
+
+    :root {
+      --scale: 1;
+      --heart-color: #ea80b0;
+      --glow-color: #ffffff;
+      --bg-color: #000000;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh; /* Dynamic viewport height for mobile browsers */
+      overflow: hidden;
+      background: var(--bg-color);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* Base Container - 450x450 coordinate box scaled smoothly via CSS variable */
+    #ui {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 450px;
+      height: 450px;
+      transform: translate(-50%, -50%) scale(var(--scale, 1));
+      transform-origin: center center;
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+      pointer-events: none;
+    }
+
+    #ui .love {
+      position: absolute;
+      top: 0;
+      left: 0;
+      --i: 1;
+    }
+
+    #ui .love_word {
+      color: var(--heart-color);
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--heart-color);
+      transform: translateY(-100%) rotate(-30deg);
+      transition: color 0.5s ease, text-shadow 0.5s ease;
+    }
+
+    #ui .love_horizontal {
+      animation: horizontal 10s infinite alternate ease-in-out;
+      animation-delay: calc(var(--i) * -300ms);
+      will-change: transform;
+    }
+
+    #ui .love_vertical {
+      animation: vertical 20s infinite linear;
+      animation-delay: calc(var(--i) * -300ms);
+      will-change: transform;
+    }
+
+    /* Touch & Click Hint */
+    .hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      pointer-events: none;
+      text-align: center;
+      z-index: 10;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Keyframe Animations */
+    @keyframes horizontal {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(450px);
+      }
+    }
+
+    @keyframes vertical {
+      0% { transform: translateY(180px); }
+      10% { transform: translateY(45px); }
+      15% { transform: translateY(4.5px); }
+      18% { transform: translateY(0); }
+      20% { transform: translateY(4.5px); }
+      22% { transform: translateY(34.61538px); }
+      24% { transform: translateY(64.28571px); }
+      25% { transform: translateY(112.5px); }
+      26% { transform: translateY(64.28571px); }
+      28% { transform: translateY(34.61538px); }
+      30% { transform: translateY(4.5px); }
+      32% { transform: translateY(0); }
+      35% { transform: translateY(4.5px); }
+      40% { transform: translateY(45px); }
+      50% { transform: translateY(180px); }
+      71% { transform: translateY(428.57143px); }
+      72.5% { transform: translateY(441.17647px); }
+      75% { transform: translateY(450px); }
+      77.5% { transform: translateY(441.17647px); }
+      79% { transform: translateY(428.57143px); }
+      100% { transform: translateY(180px); }
+    }
+
+    /* CSS Media Breakpoints (Pure CSS Fallback) */
+    @media (min-width: 1400px) {
+      :root { --scale: 1.15; }
+    }
+    @media (min-width: 1024px) and (max-width: 1399px) {
+      :root { --scale: 1; }
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      :root { --scale: 0.8; }
+    }
+    @media (min-width: 480px) and (max-width: 767px) {
+      :root { --scale: 0.65; }
+    }
+    @media (max-width: 479px) {
+      :root { --scale: 0.55; }
+      .hint { font-size: 0.75rem; bottom: 15px; }
+    }
+    @media (max-width: 359px) {
+      :root { --scale: 0.45; }
+    }
+    @media (max-height: 500px) {
+      :root { --scale: 0.5; }
+      .hint { bottom: 8px; font-size: 0.7rem; }
+    }
+    @media (max-height: 380px) {
+      :root { --scale: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Responsive Container -->
+  <div id="ui" aria-label="Animated I Love You Heart Shape"></div>
+
+  <!-- Interactive Controls Hint -->
+  <div class="hint">Tap or click anywhere to switch color themes</div>
+
+  <script>
+    const ui = document.getElementById("ui");
+    const totalItems = 100;
+
+    const themes = [
+      { heart: "#ea80b0", glow: "#ffffff" }, // Classic Pink & White
+      { heart: "#ff3366", glow: "#ff99bb" }, // Neon Crimson
+      { heart: "#00f2fe", glow: "#4facfe" }, // Electric Cyan
+      { heart: "#f6d365", glow: "#fda085" }, // Sunset Gold
+      { heart: "#b19ffb", glow: "#e2d1f9" }  // Lavender Dream
+    ];
+    let currentThemeIndex = 0;
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 1; i <= totalItems; i++) {
+      const love = document.createElement("div");
+      love.className = "love";
+      love.style.setProperty("--i", i);
+
+      love.innerHTML = `
+        <div class="love_horizontal">
+          <div class="love_vertical">
+            <div class="love_word"> Umesh
+            </div>
+          </div>
+        </div>
+      `;
+
+      fragment.appendChild(love);
+    }
+
+    ui.appendChild(fragment);
+
+    function updateScale() {
+      const padding = 40;
+      const animationBoundingSize = 520;
+
+      const scaleX = (window.innerWidth - padding) / animationBoundingSize;
+      const scaleY = (window.innerHeight - padding) / animationBoundingSize;
+
+      let targetScale = Math.min(scaleX, scaleY);
+      targetScale = Math.max(0.35, Math.min(targetScale, 1.25));
+
+      document.documentElement.style.setProperty("--scale", targetScale.toFixed(3));
+    }
+
+    window.addEventListener("resize", updateScale);
+    window.addEventListener("orientationchange", updateScale);
+    updateScale();
+
+    document.addEventListener("click", () => {
+      currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+      const theme = themes[currentThemeIndex];
+      
+      document.documentElement.style.setProperty("--heart-color", theme.heart);
+      document.documentElement.style.setProperty("--glow-color", theme.glow);
+    });
+  </script>
+</body>
+</html>
